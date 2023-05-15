@@ -1,0 +1,6 @@
+for ubuntu :
+sudo apt-get update
+sudo apt-get install libapache2-mod-wsgi-py3  #for python 3 for apache
+sudo apt-get install espeak-ng
+if you upload this project on azure web app use 1. apt install espeak-ng
+2. espeak-ng --version

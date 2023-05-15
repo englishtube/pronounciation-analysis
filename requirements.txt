@@ -1,0 +1,6 @@
+flask==2.2.3
+gunicorn==20.1.0
+SpeechRecognition==3.10.0
+jiwer==3.0.1
+phonemizer==3.2.1
+vader-multi==3.2.2.1
