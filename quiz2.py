@@ -3,8 +3,8 @@ import nltk
 from nltk.corpus import wordnet as wn
 import translators as ts
     
-def translatorch(chainese_word):
-    eng_trans = ts.translate_text(chainese_word, translator='google', from_language='zh-CN', to_language='en-US')
+def translatorch(chinese_word):
+    eng_trans = ts.translate_text(chinese_word, translator='google', from_language='zh-CN', to_language='en-US')
     return eng_trans
     
 def translatorja(japanese_word):
@@ -49,9 +49,9 @@ def antonym(eng_trans):
     return option2
     
 
-def word_quizch(chainese_word, eng_trans, option1, option2):
+def word_quizch(chinese_word, eng_trans, option1, option2):
     QUESTIONS = {
-        chainese_word: [
+        chinese_word: [
             eng_trans, option1, option2
         ]
     }
