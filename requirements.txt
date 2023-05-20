@@ -5,3 +5,4 @@ jiwer==3.0.1
 phonemizer==3.2.1
 vader-multi==3.2.2.1
 nltk==3.8.1
+translators==5.7.6
