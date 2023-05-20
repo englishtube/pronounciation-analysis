@@ -1,6 +1,7 @@
 from flask import Flask, request, send_from_directory
 import os
 import shutil
+import random
 import json
 import speech_score as ss
 import quiz
@@ -156,6 +157,23 @@ def word_quiz2():
             }
             json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
             return json_data
+        
+# For Sentence Review 
+@app.route("/sentence_review",methods=['POST','GET'])
+def sentence_review():
+    input_sentence = ""
+    json_data = ""
+    if request.method == 'POST':
+        input_sentence = request.form['input_sentence']
+        words = input_sentence.split()
+        random.shuffle(words)
+        jumble_output = ' '.join(words)
+        json_d = {
+            "input_sentence": input_sentence,
+            "jumble_output": jumble_output
+            }
+        json_data=json.dumps(json_d)
+    return json_data
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
