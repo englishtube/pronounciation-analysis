@@ -150,17 +150,17 @@ def pronoun_score(transcribe,cwr):
     if polarity_dict['pos'] > polarity_dict['neg'] and polarity_dict['pos'] > polarity_dict['neu']:
       print("Positive : ", polarity_dict['pos'])
       pos = polarity_dict['pos']
-      pronouciation_score = ((pos + cwr) / 2)
-      print("Pronouciation Score: {0:.2f}".format(pronouciation_score))
+      pronounciation_score = ((pos + cwr) / 2)
+      print("Pronounciation Score: {0:.2f}".format(pronounciation_score))
 
     elif polarity_dict['neg'] > polarity_dict['pos'] and polarity_dict['neg'] > polarity_dict['neu']:
       print("Negative : ", polarity_dict['neg'])
       neg = polarity_dict['neg']
-      pronouciation_score = ((neg + cwr) / 2)
-      print("Pronouciation Score: {0:.2f}".format(pronouciation_score))
+      pronounciation_score = ((neg + cwr) / 2)
+      print("Pronounciation Score: {0:.2f}".format(pronounciation_score))
     else :
       print("Neutral : ", polarity_dict['neu'])
       neu = polarity_dict['neu']
-      pronouciation_score = ((neu + cwr) / 2)
-      print("Pronouciation Score: {0:.2f}".format(pronouciation_score))
-    return pronouciation_score
+      pronounciation_score = ((neu + cwr) / 2)
+      print("Pronounciation Score: {0:.2f}".format(pronounciation_score))
+    return pronounciation_score
