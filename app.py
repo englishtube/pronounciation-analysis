@@ -107,19 +107,19 @@ def word_quiz1():
 # For Word Review2 
 @app.route("/word_quiz2",methods=['POST','GET'])
 def word_quiz2():
-    chainese_word = ""
+    chinese_word = ""
     japanese_word = ""
     korean_word = ""
     json_data = ""
     if request.method == 'POST':
-        if 'chainese_word' in request.form:
-            chainese_word = request.form['chainese_word']
-            eng_trans = quiz2.translatorch(chainese_word)
+        if 'chinese_word' in request.form:
+            chinese_word = request.form['chinese_word']
+            eng_trans = quiz2.translatorch(chinese_word)
             option1 = quiz2.synonym(eng_trans)
             option2 = quiz2.antonym(eng_trans)
-            correct_answer = quiz2.word_quizch(chainese_word, eng_trans, option1, option2)
+            correct_answer = quiz2.word_quizch(chinese_word, eng_trans, option1, option2)
             json_d = {
-                "chainese_word": chainese_word,
+                "chinese_word": chinese_word,
                 "option1": eng_trans,
                 "option2": option1,
                 "option3": option2,
