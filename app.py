@@ -107,57 +107,29 @@ def word_quiz1():
 # For Word Review2 
 @app.route("/word_quiz2",methods=['POST','GET'])
 def word_quiz2():
-    chinese_word = ""
-    japanese_word = ""
-    korean_word = ""
+    word = ""
     json_data = ""
     if request.method == 'POST':
-        if 'chinese_word' in request.form:
-            chinese_word = request.form['chinese_word']
-            eng_trans = quiz2.translatorch(chinese_word)
-            option1 = quiz2.synonym(eng_trans)
-            option2 = quiz2.antonym(eng_trans)
-            correct_answer = quiz2.word_quizch(chinese_word, eng_trans, option1, option2)
-            json_d = {
-                "chinese_word": chinese_word,
-                "option1": eng_trans,
-                "option2": option1,
-                "option3": option2,
-                "correct_answer": correct_answer
-            }
-            json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
-            return json_data
-        if 'japanese_word' in request.form:
-            japanese_word = request.form['japanese_word']
-            eng_trans = quiz2.translatorja(japanese_word)
-            option1 = quiz2.synonym(eng_trans)
-            option2 = quiz2.antonym(eng_trans)
-            correct_answer = quiz2.word_quizja(japanese_word, eng_trans, option1, option2)
-            json_d = {
-                "japanese_word": japanese_word,
-                "option1": eng_trans,
-                "option2": option1,
-                "option3": option2,
-                "correct_answer": correct_answer
-            }
-            json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
-            return json_data
-        if 'korean_word' in request.form:
-            korean_word = request.form['korean_word']
-            eng_trans = quiz2.translatorko(korean_word)
-            option1 = quiz2.synonym(eng_trans)
-            option2 = quiz2.antonym(eng_trans)
-            correct_answer = quiz2.word_quizko(korean_word, eng_trans, option1, option2)
-            json_d = {
-                "korean_word": korean_word,
-                "option1": eng_trans,
-                "option2": option1,
-                "option3": option2,
-                "correct_answer": correct_answer
-            }
-            json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
-            return json_data
-        
+        word = request.form['word']
+        lang = request.form['lang']
+        eng_trans = quiz2.translator(word,lang)
+        option1 = quiz2.generate_option1()
+        while eng_trans == option1:
+            option1 = quiz2.generate_option1()
+        option2 = quiz2.generate_option2()
+        while eng_trans == option2 and option1 == option2 :
+            option2 = quiz2.generate_option2()
+        correct_answer = quiz2.word_quiz(word, eng_trans, option1, option2)
+        json_d = {
+            "word": word,
+            "option1": eng_trans,
+            "option2": option1,
+            "option3": option2,
+            "correct_answer": correct_answer
+        }
+        json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
+    return json_data
+
 # For Sentence Review 
 @app.route("/sentence_review",methods=['POST','GET'])
 def sentence_review():
