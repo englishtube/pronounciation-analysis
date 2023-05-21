@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'englishtube-audio-analysis'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C9A2C0441B90486886070F504E8BBD9C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2C1A5CAD507F4E25817AE5A76E91FB60 }}
