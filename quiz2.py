@@ -1,81 +1,36 @@
 import os
 import nltk
-from nltk.corpus import wordnet as wn
+from nltk.corpus import wordnet
 import translators as ts
     
-def translatorch(chinese_word):
-    eng_trans = ts.translate_text(chinese_word, translator='google', from_language='zh-CN', to_language='en-US')
-    return eng_trans
-    
-def translatorja(japanese_word):
-    eng_trans = ts.translate_text(japanese_word, translator='google', from_language='ja', to_language='en-US')
-    return eng_trans
+def translator(word, lang):
+    if lang == "zh":
+        eng_trans = ts.translate_text(word, translator='google', from_language=lang, to_language='en-US')
+        return eng_trans
+    elif lang == "ja":
+        eng_trans = ts.translate_text(word, translator='google', from_language=lang, to_language='en-US')
+        return eng_trans
+    elif lang == "ko":
+        eng_trans = ts.translate_text(word, translator='google', from_language=lang, to_language='en-US')
+        return eng_trans
 
-def translatorko(korean_word):
-    eng_trans = ts.translate_text(korean_word, translator='google', from_language='ko', to_language='en-US')
-    return eng_trans
+def generate_option1():
+  verb_synsets = list(wordnet.all_synsets(pos='v'))
+  verb_lemmas = [lemma for synset in verb_synsets for lemma in synset.lemmas()]
+  verb_names = [lemma.name() for lemma in verb_lemmas]
+  option1 = random.choice(verb_names).replace('_',' ')
+  return option1
 
-def synonym(eng_trans):
+def generate_option2():
+  verb_synsets = list(wordnet.all_synsets(pos='v'))
+  verb_lemmas = [lemma for synset in verb_synsets for lemma in synset.lemmas()]
+  verb_names = [lemma.name() for lemma in verb_lemmas]
+  option2 = random.choice(verb_names).replace('_',' ')
+  return option2
 
-    synonyms = []
-
-    for syn in wn.synsets(eng_trans):
-        for lemma in syn.lemmas():
-            synonyms.append(lemma.name())
-
-   
-    syno=[]
-    [syno.append(x) for x in synonyms if x not in syno]
-    
-    option1 = syno[1]
-
-    return option1
-
-      
-def antonym(eng_trans):
-
-    antonyms = []
-
-    for syn in wn.synsets(eng_trans):
-        for lemma in syn.lemmas():
-            if lemma.antonyms():
-                antonyms.append(lemma.antonyms()[0].name())
-    
-    anto=[]
-    [anto.append(x) for x in antonyms if x not in anto]
-    
-    option2 = anto[0]
-
-    return option2
-    
-
-def word_quizch(chinese_word, eng_trans, option1, option2):
+def word_quiz(word, eng_trans, option1, option2):
     QUESTIONS = {
-        chinese_word: [
-            eng_trans, option1, option2
-        ]
-    }
-
-    for question, alternatives in QUESTIONS.items():
-        correct_answer = alternatives[0]
-        sorted_alternatives = sorted(alternatives)
-    return correct_answer
-    
-def word_quizja(japanese_word, eng_trans, option1, option2):
-    QUESTIONS = {
-        japanese_word: [
-            eng_trans, option1, option2
-        ]
-    }
-
-    for question, alternatives in QUESTIONS.items():
-        correct_answer = alternatives[0]
-        sorted_alternatives = sorted(alternatives)
-    return correct_answer
-
-def word_quizko(korean_word, eng_trans, option1, option2):
-    QUESTIONS = {
-        korean_word: [
+        word: [
             eng_trans, option1, option2
         ]
     }
