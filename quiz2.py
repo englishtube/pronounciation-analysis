@@ -2,7 +2,8 @@ import os
 import nltk
 from nltk.corpus import wordnet
 import translators as ts
-    
+import random
+
 def translator(word, lang):
     if lang == "zh":
         eng_trans = ts.translate_text(word, translator='google', from_language=lang, to_language='en-US')
