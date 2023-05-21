@@ -94,10 +94,14 @@ def word_quiz1():
     if(request.method == 'POST'):
         word=request.form['word']
         word_definition = quiz.meaning(word)
-        syno = quiz.synonym(word)
-        anto = quiz.antonym(word)
-        option1 = quiz.definitions(syno)
-        option2 = quiz.definitions(anto)
+        word1 = quiz.generate_option1()
+        while word == word1:
+            word1 = quiz.generate_option1()
+        option1 = quiz.word_def1(word1)
+        word2 = quiz.generate_option2()
+        while word == word2 and word1 == word2:
+            word2 = quiz.generate_option2()
+        option2 = quiz.word_def2(word2)
         correct_answer = quiz.word_quiz(word, word_definition, option1, option2)
         json_d = {"word" : word, "option1" : word_definition, "option2" : option1, "option3" : option2, "correct_answer" : correct_answer}
         json_data=json.dumps(json_d)
