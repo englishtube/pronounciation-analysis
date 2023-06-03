@@ -1,28 +1,43 @@
-import speech_recognition as sr
+import os
+import io
+from pydub import AudioSegment
+from google.cloud import speech_v1p1beta1 as speech
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import jiwer
 from phonemizer.backend import EspeakBackend
 
+# Convert acc to wav file
+def convert(analysis_audio, wav_folder_path):
+    wav_file = os.path.join(wav_folder_path, "converted_audio.wav")
+
+    # Load the .aac file
+    audio = AudioSegment.from_file(analysis_audio, format='aac')
+
+    # Export the audio to PCM WAV format
+    audio.export(wav_file, format='wav')
+    return wav_file
+
+
 # Speech Recognition
-def speechrecg(analysis_audio):
-    r = sr.Recognizer()
-    # load speech file
-    audio_file = sr.AudioFile(analysis_audio)
+def transcribe_speech(wav_audio):
+    client = speech.SpeechClient()
 
-    # transcribe speech using Google Speech Recognition
-    with audio_file as source:
-        audio = r.record(source)
+    with io.open(wav_audio, "rb") as audio_file:
+        content = audio_file.read()
 
-    # Recognize speech using Google Cloud Speech
+    audio = speech.RecognitionAudio(content=content)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=44100,
+        language_code="en-US",
+        audio_channel_count = 2
+    )
 
-    try:
-        transcribe = r.recognize_google(audio, language="en")
-        
-    except sr.UnknownValueError:
-        print("Sorry, I didn't understand what you said")
-    except sr.RequestError as e:
-        print("Could not request results from Google Cloud Speech service; {0}".format(e))
-    return transcribe
+    response = client.recognize(config=config, audio=audio)
+
+    for result in response.results:
+        result = result.alternatives[0].transcript
+    return result
 
 # Get Phonemes
 def phoneme(text):
@@ -150,17 +165,17 @@ def pronoun_score(transcribe,cwr):
     if polarity_dict['pos'] > polarity_dict['neg'] and polarity_dict['pos'] > polarity_dict['neu']:
       print("Positive : ", polarity_dict['pos'])
       pos = polarity_dict['pos']
-      pronounciation_score = ((pos + cwr) / 2)
-      print("Pronounciation Score: {0:.2f}".format(pronounciation_score))
+      pronouciation_score = ((pos + cwr) / 2)
+      print("Pronouciation Score: {0:.2f}".format(pronouciation_score))
 
     elif polarity_dict['neg'] > polarity_dict['pos'] and polarity_dict['neg'] > polarity_dict['neu']:
       print("Negative : ", polarity_dict['neg'])
       neg = polarity_dict['neg']
-      pronounciation_score = ((neg + cwr) / 2)
-      print("Pronounciation Score: {0:.2f}".format(pronounciation_score))
+      pronouciation_score = ((neg + cwr) / 2)
+      print("Pronouciation Score: {0:.2f}".format(pronouciation_score))
     else :
       print("Neutral : ", polarity_dict['neu'])
       neu = polarity_dict['neu']
-      pronounciation_score = ((neu + cwr) / 2)
-      print("Pronounciation Score: {0:.2f}".format(pronounciation_score))
-    return pronounciation_score
+      pronouciation_score = ((neu + cwr) / 2)
+      print("Pronouciation Score: {0:.2f}".format(pronouciation_score))
+    return pronouciation_score
