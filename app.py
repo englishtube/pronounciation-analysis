@@ -11,11 +11,20 @@ location = os.getcwd()
 audio_dir = "audios"
 audio_folder_path = os.path.join(location, audio_dir)
 
+wav_dir = "wav_file"
+wav_folder_path = os.path.join(location, wav_dir)
+
 AUDIO_UPLOAD_FOLDER = audio_folder_path
-ALLOWED_EXTENSIONS = {'wav'}
+ALLOWED_EXTENSIONS = {'aac'}
 
 app = Flask(__name__)
 app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
+
+# Set the path to your JSON key file
+key_file_path = os.path.join(location, "academic-timing-383003-bc950b6b4496.json")
+
+# Set the environment variable
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_file_path
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -40,14 +49,22 @@ def pronouciation_analyse():
             elif(isExistinput == False):
                 os.mkdir(audio_folder_path)
 
+            isExistinput = os.path.exists(wav_folder_path)
+            if(isExistinput == True):
+                shutil.rmtree(wav_folder_path)
+                os.mkdir(wav_folder_path)
+            elif(isExistinput == False):
+                os.mkdir(wav_folder_path)
+
             audio = request.files['audio']
             actual_text = request.form['text']
 
             if audio and allowed_file(audio.filename):
-                analysis_audio = os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], "analysis_audio.wav")
+                analysis_audio = os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], "analysis_audio.aac")
                 audio.save(analysis_audio)
 
-            transcribe = ss.speechrecg(analysis_audio)
+            wav_audio = ss.convert(analysis_audio, wav_folder_path)
+            transcribe = ss.transcribe_speech(wav_audio)
             input_ref = ss.phoneme(actual_text)
             input_hyp = ss.phoneme(transcribe)
             output, compares = ss.wer(input_ref,input_hyp,debug=True)
@@ -68,7 +85,7 @@ def pronouciation_analyse():
             cwr = (1 - output['WER'])
 
             pronouciation_score = ss.pronoun_score(transcribe,cwr)
-            json_d = {"status":"success", "analysis_audio" : analysis_audio, "actual_text" : actual_text, "transcribe" : transcribe, 'pronouciation_score' : pronouciation_score}
+            json_d = {"status":"success", "analysis_audio" : analysis_audio, "wav_audio" : wav_audio, "actual_text" : actual_text, "transcribe" : transcribe, 'pronouciation_score' : pronouciation_score}
             json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
             print("json_data",json_data)
             return json_data
@@ -77,15 +94,6 @@ def pronouciation_analyse():
             json_data=json.dumps(json_d)
             return json_data
         
-# Download wav file
-@app.route('/download/analysis_audio')
-def downloadaudio():
-  audio_filename = "analysis_audio.wav"
-  path = os.path.join(audio_folder_path, audio_filename)
-  if os.path.isfile(path):
-    return send_from_directory(audio_folder_path, audio_filename)
-  return "No file found"
-
 #For Word Review1 
 @app.route("/word_quiz1",methods=['POST','GET'])
 def word_quiz1():
@@ -152,4 +160,4 @@ def sentence_review():
     return json_data
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=False)
