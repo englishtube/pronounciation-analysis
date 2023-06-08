@@ -56,7 +56,4 @@ def word_quiz(word, meaning, option1, option2):
 
     for question, alternatives in QUESTIONS.items():
         correct_answer = alternatives[0]
-        sorted_alternatives = sorted(alternatives)
-        # for label, alternative in enumerate(sorted_alternatives):
-            # print(f"  {label}) {alternative}")
     return correct_answer
