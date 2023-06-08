@@ -56,4 +56,5 @@ def word_quiz(word, meaning, option1, option2):
 
     for question, alternatives in QUESTIONS.items():
         correct_answer = alternatives[0]
+        
     return correct_answer
