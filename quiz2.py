@@ -38,5 +38,4 @@ def word_quiz(word, eng_trans, option1, option2):
 
     for question, alternatives in QUESTIONS.items():
         correct_answer = alternatives[0]
-        
     return correct_answer
