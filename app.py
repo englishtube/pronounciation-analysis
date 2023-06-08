@@ -112,6 +112,15 @@ def word_quiz1():
         option2 = quiz.word_def2(word2)
         correct_answer = quiz.word_quiz(word, word_definition, option1, option2)
         json_d = {"word" : word, "option1" : word_definition, "option2" : option1, "option3" : option2, "correct_answer" : correct_answer}
+        # Specify the keys whose values you want to shuffle
+        keys_to_shuffle = ["option1", "option2", "option3"]
+        # Extract the values into a list
+        values_to_shuffle = [json_d[key] for key in keys_to_shuffle]
+        # Shuffle the values
+        random.shuffle(values_to_shuffle)
+        # Update the dictionary with the shuffled values
+        for key, value in zip(keys_to_shuffle, values_to_shuffle):
+            json_d[key] = value
         json_data=json.dumps(json_d)
         print("json_data",json_data)
     return json_data
@@ -139,6 +148,15 @@ def word_quiz2():
             "option3": option2,
             "correct_answer": correct_answer
         }
+        # Specify the keys whose values you want to shuffle
+        keys_to_shuffle = ["option1", "option2", "option3"]
+        # Extract the values into a list
+        values_to_shuffle = [json_d[key] for key in keys_to_shuffle]
+        # Shuffle the values
+        random.shuffle(values_to_shuffle)
+        # Update the dictionary with the shuffled values
+        for key, value in zip(keys_to_shuffle, values_to_shuffle):
+            json_d[key] = value
         json_data=json.dumps(json_d, ensure_ascii=False).encode('utf8')
     return json_data
 
