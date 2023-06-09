@@ -30,7 +30,7 @@ def transcribe_speech(wav_audio):
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=44100,
         language_code="en-US",
-        audio_channel_count = 2
+        audio_channel_count = 1
     )
 
     response = client.recognize(config=config, audio=audio)
