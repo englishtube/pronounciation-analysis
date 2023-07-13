@@ -11,7 +11,10 @@ def convert(analysis_audio, wav_folder_path):
     wav_file = os.path.join(wav_folder_path, "converted_audio.wav")
 
     # Load the .aac file
-    audio = AudioSegment.from_file(analysis_audio, format='aac')
+    try:
+        audio = AudioSegment.from_file(aac_file, "aac")
+    except:
+        audio = AudioSegment.from_file(aac_file, format="mp4")
 
     # Export the audio to PCM WAV format
     audio.export(wav_file, format='wav')
